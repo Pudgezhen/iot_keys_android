@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.keys.iot.R;
 import com.keys.iot.api.Api;
 import com.keys.iot.api.ApiConfig;
 import com.keys.iot.api.HttpCallback;
+import com.keys.iot.entity.Res;
 import com.keys.iot.util.StringUtils;
 
 import java.util.HashMap;
@@ -57,17 +59,19 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("mobile", account);
+        params.put("username", account);
         params.put("password", pwd);
-        Api.config(ApiConfig.REGISTER, params).postRequest(this,new HttpCallback() {
+        Api.config(ApiConfig.REGISTER, params).postRequest(this, new HttpCallback() {
             @Override
             public void onSuccess(final String res) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(res);
-                    }
-                });
+                Gson json = new Gson();
+                Res r = json.fromJson(res, Res.class);
+                if (r.getCode() == 0) {
+                    navigateTo(LoginActivity.class);
+                    showToastSync("注册成功");
+                }else{
+                    showToastSync("注册失败");
+                }
             }
 
             @Override

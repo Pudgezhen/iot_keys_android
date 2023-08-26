@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.HomeActivity">
+
+    <Button
+        android:id="@+id/btn_LED_ON"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:textSize="20sp"
+        android:textColor="#ff0000"
+        android:background="@color/black"
+        android:text="开灯"/>
+
+    <Button
+
+        android:id="@+id/btn_LED_OFF"
+
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:textSize="20sp"
+        android:textColor="#ff0000"
+        android:background="@color/black"
+        android:text="关灯"/>
+
+</LinearLayout>

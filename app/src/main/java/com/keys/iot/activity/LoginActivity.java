@@ -1,35 +1,20 @@
 package com.keys.iot.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.keys.iot.R;
 import com.keys.iot.api.Api;
 import com.keys.iot.api.ApiConfig;
 import com.keys.iot.api.HttpCallback;
-import com.keys.iot.config.AppConfig;
+import com.keys.iot.entity.Res;
 import com.keys.iot.util.StringUtils;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class LoginActivity extends BaseActivity {
 
@@ -76,11 +61,18 @@ public class LoginActivity extends BaseActivity {
         Api.config(ApiConfig.LOGIN,params).postRequest(this,new HttpCallback() {
             @Override
             public void onSuccess(String res) {
-                SharedPreferences sp = getSharedPreferences("keys",MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("token",res);
-                editor.commit();
-                showToastSync("登陆成功");
+                Gson json = new Gson();
+                Res r = json.fromJson(res, Res.class);
+                if (r.getCode() == 0) {
+                    SharedPreferences sp = getSharedPreferences("keys", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("token", r.getData().toString());
+                    editor.apply();
+                    navigateTo(HomeActivity.class);
+                    showToastSync("登陆成功");
+                }else{
+                    showToastSync("登陆失败");
+                }
             }
 
             @Override

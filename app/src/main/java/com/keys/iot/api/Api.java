@@ -48,7 +48,7 @@ public class Api {
     }
 
     public void postRequest(Context context, final HttpCallback callback) {
-        SharedPreferences sp = context.getSharedPreferences("sp_ttit", MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences("keys", MODE_PRIVATE);
         String token = sp.getString("token", "");
         JSONObject jsonObject = new JSONObject(mParams);
         String jsonStr = jsonObject.toString();
@@ -59,7 +59,7 @@ public class Api {
         Request request = new Request.Builder()
                 .url(requestUrl)
                 .addHeader("contentType", "application/json;charset=UTF-8")
-                .addHeader("token", token)
+                .addHeader("Authorization", token)
                 .post(requestBodyJson)
                 .build();
         //第四步创建call回调对象
